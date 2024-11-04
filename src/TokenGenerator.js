@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, TextField, Grid, Typography, Container, Box, Paper } from '@mui/material';
+import { Button, TextField, Grid, Typography, Container, Paper } from '@mui/material';
+import { Box } from '@mui/system';
+import { motion } from 'framer-motion';
 
 const TokenGenerator = () => {
   const [blueTokens, setBlueTokens] = useState([]);
@@ -30,129 +32,64 @@ const TokenGenerator = () => {
   };
 
   const renderTokens = (tokens, color, perRow) => {
-    return (
-      <Grid container spacing={2} justifyContent="center">
-        {tokens.map((token, index) => (
-          <Grid item xs={12 / perRow} key={`${color}-${index}`}>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width={70}
-              height={70}
-              bgcolor={color === 'blue' ? '#3f51b5' : '#f44336'}
-              color="white"
-              borderRadius={2}
-              boxShadow={3}
-              fontSize={18}
-              style={{ margin: '10px auto' }}
-            >
-              {token}
-            </Box>
-          </Grid>
-        ))}
+    return tokens.map((token, index) => (
+      <Grid item xs={12 / perRow} key={`${color}-${index}`} style={{ textAlign: 'center' }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Paper
+            elevation={5}
+            style={{
+              padding: '10px',
+              background: color === 'blue' ? 'linear-gradient(135deg, #4A90E2, #6DC7FF)' : 'linear-gradient(135deg, #FF6F61, #FFB199)',
+              color: '#fff',
+              fontWeight: 'bold',
+              borderRadius: '12px',
+              boxShadow: '0px 4px 12px rgba(0,0,0,0.2)',
+            }}
+          >
+            {token}
+          </Paper>
+        </motion.div>
       </Grid>
-    );
+    ));
   };
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={4} style={{ padding: '20px', borderRadius: '15px', marginTop: '20px' }}>
-        <Typography variant="h4" style={{ marginBottom: '20px', textAlign: 'center', color: '#333' }}>
-          Token Generator
+      <Box sx={{ mt: 4, mb: 4, textAlign: 'center' }}>
+        <Typography variant="h3" color="primary" style={{ fontWeight: 'bold', color: '#fff' }}>
+          Fancy Token Generator
         </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="h6" color="primary">Blue Token Settings</Typography>
-            <TextField
-              label="Number of Blue Tokens"
-              name="count"
-              type="number"
-              value={blueSettings.count}
-              onChange={(e) => handleInputChange(e, 'blue')}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Prefix for Blue Tokens"
-              name="prefix"
-              value={blueSettings.prefix}
-              onChange={(e) => handleInputChange(e, 'blue')}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Blue Tokens Per Row"
-              name="perRow"
-              type="number"
-              value={blueSettings.perRow}
-              onChange={(e) => handleInputChange(e, 'blue')}
-              fullWidth
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="h6" color="secondary">Red Token Settings</Typography>
-            <TextField
-              label="Number of Red Tokens"
-              name="count"
-              type="number"
-              value={redSettings.count}
-              onChange={(e) => handleInputChange(e, 'red')}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Prefix for Red Tokens"
-              name="prefix"
-              value={redSettings.prefix}
-              onChange={(e) => handleInputChange(e, 'red')}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Red Tokens Per Row"
-              name="perRow"
-              type="number"
-              value={redSettings.perRow}
-              onChange={(e) => handleInputChange(e, 'red')}
-              fullWidth
-              margin="normal"
-            />
-          </Grid>
+      </Box>
+      <Grid container spacing={3} justifyContent="center">
+        <Grid item xs={12} sm={6} md={4}>
+          <TextField label="Number of Blue Tokens" name="count" type="number" value={blueSettings.count} onChange={(e) => handleInputChange(e, 'blue')} fullWidth margin="normal" variant="outlined" />
+          <TextField label="Prefix for Blue Tokens" name="prefix" value={blueSettings.prefix} onChange={(e) => handleInputChange(e, 'blue')} fullWidth margin="normal" variant="outlined" />
+          <TextField label="Blue Tokens Per Row" name="perRow" type="number" value={blueSettings.perRow} onChange={(e) => handleInputChange(e, 'blue')} fullWidth margin="normal" variant="outlined" />
         </Grid>
-        <Box display="flex" justifyContent="center" marginTop={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={generateTokens}
-            style={{ marginRight: '15px' }}
-          >
-            Generate
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={clearTokens}
-          >
-            Clear
-          </Button>
-        </Box>
-      </Paper>
+        <Grid item xs={12} sm={6} md={4}>
+          <TextField label="Number of Red Tokens" name="count" type="number" value={redSettings.count} onChange={(e) => handleInputChange(e, 'red')} fullWidth margin="normal" variant="outlined" />
+          <TextField label="Prefix for Red Tokens" name="prefix" value={redSettings.prefix} onChange={(e) => handleInputChange(e, 'red')} fullWidth margin="normal" variant="outlined" />
+          <TextField label="Red Tokens Per Row" name="perRow" type="number" value={redSettings.perRow} onChange={(e) => handleInputChange(e, 'red')} fullWidth margin="normal" variant="outlined" />
+        </Grid>
+      </Grid>
+      <Box sx={{ textAlign: 'center', mt: 3, mb: 3 }}>
+        <Button variant="contained" color="primary" onClick={generateTokens} style={{ marginRight: '10px', padding: '10px 20px' }}>Generate</Button>
+        <Button variant="outlined" color="secondary" onClick={clearTokens} style={{ padding: '10px 20px' }}>Clear</Button>
+      </Box>
 
-      <Paper elevation={3} style={{ padding: '20px', borderRadius: '15px', marginTop: '30px' }}>
-        <Typography variant="h5" style={{ marginBottom: '15px', color: '#3f51b5' }}>
-          Blue Tokens
-        </Typography>
-        {renderTokens(blueTokens, 'blue', blueSettings.perRow || 3)}
-      </Paper>
+      <Typography variant="h5" color="primary" style={{ marginBottom: '10px', color: '#fff' }}>Blue Tokens</Typography>
+      <Grid container spacing={2} justifyContent="center">
+        {renderTokens(blueTokens, 'blue', blueSettings.perRow || 1)}
+      </Grid>
 
-      <Paper elevation={3} style={{ padding: '20px', borderRadius: '15px', marginTop: '30px' }}>
-        <Typography variant="h5" style={{ marginBottom: '15px', color: '#f44336' }}>
-          Red Tokens
-        </Typography>
-        {renderTokens(redTokens, 'red', redSettings.perRow || 3)}
-      </Paper>
+      <Typography variant="h5" color="secondary" style={{ margin: '20px 0 10px', color: '#fff' }}>Red Tokens</Typography>
+      <Grid container spacing={2} justifyContent="center">
+        {renderTokens(redTokens, 'red', redSettings.perRow || 1)}
+      </Grid>
     </Container>
   );
 };
